@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INAZA Issue Submission</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            padding: 2rem 1rem;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        header {
+            margin-bottom: 2rem;
+            border-bottom: 3px solid #1F3A70;
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-family: 'Arsenal', Georgia, serif;
+            font-size: 28px;
+            color: #1F3A70;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-family: 'Arsenal', Georgia, serif;
+            font-weight: 600;
+            font-size: 14px;
+            color: #1F3A70;
+            margin-bottom: 0.5rem;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            color: #333;
+            background: #fafafa;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1F3A70;
+            background: white;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Arsenal', Georgia, serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #1F3A70;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #162850;
+        }
+
+        .btn-secondary {
+            background: #e8eef5;
+            color: #1F3A70;
+            border: 1px solid #d0dce8;
+        }
+
+        .btn-secondary:hover {
+            background: #d0dce8;
+        }
+
+        .success-message {
+            display: none;
+            padding: 12px 16px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 6px;
+            margin-top: 1rem;
+            font-size: 14px;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        .cases-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .cases-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .cases-header h2 {
+            font-family: 'Arsenal', Georgia, serif;
+            font-size: 20px;
+            color: #1F3A70;
+            margin: 0;
+        }
+
+        .case-count {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .case-card {
+            background: #f9fafb;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .case-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .case-policy {
+            font-family: 'Arsenal', Georgia, serif;
+            font-weight: 600;
+            font-size: 15px;
+            color: #1F3A70;
+        }
+
+        .case-date {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .case-tag {
+            background: #e8eef5;
+            color: #1F3A70;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .case-finding {
+            margin-bottom: 0.75rem;
+            font-size: 13px;
+        }
+
+        .case-finding-label {
+            color: #1F3A70;
+            font-family: 'Arsenal', Georgia, serif;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .case-finding-text {
+            color: #555;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            margin-left: 0.5rem;
+        }
+
+        .case-actions {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-delete {
+            padding: 6px 12px;
+            background: #ffe8e8;
+            color: #c41e3a;
+            border: 1px solid #ffcccc;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-delete:hover {
+            background: #ffcccc;
+        }
+
+        .export-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-export {
+            padding: 10px 16px;
+            background: #1F3A70;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Arsenal', Georgia, serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-export:hover {
+            background: #162850;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>INAZA Issue Submission</h1>
+            <p class="subtitle">Report issues found during policy review</p>
+        </header>
+
+        <form id="issueForm">
+            <div class="form-section">
+                <div class="two-col">
+                    <div class="form-group">
+                        <label for="policyNum">Policy Number *</label>
+                        <input type="text" id="policyNum" placeholder="SNH790155-000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date Flagged *</label>
+                        <input type="date" id="date" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="taskInstruction">Task Instruction *</label>
+                    <select id="taskInstruction" required>
+                        <option value="">Select task...</option>
+                        <option value="INAZA - Issues Validating (Homeowners)">INAZA - Issues Validating (Homeowners)</option>
+                        <option value="INAZA - Issues Detected (Prior Coverage / In-Agency Transfer)">INAZA - Issues Detected (Prior Coverage / In-Agency Transfer)</option>
+                        <option value="INAZA - Issues Validating (E-Sign)">INAZA - Issues Validating (E-Sign)</option>
+                        <option value="INAZA - Issues Validating (US Identifications)">INAZA - Issues Validating (US Identifications)</option>
+                        <option value="INAZA - Issues Validating (INTL Identifications)">INAZA - Issues Validating (INTL Identifications)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="inazaFinding">INAZA Finding *</label>
+                    <textarea id="inazaFinding" placeholder="Copy exact error/finding from INAZA..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="actualIssue">Actual Issue (what you found) *</label>
+                    <textarea id="actualIssue" placeholder="What the underwriter found after reviewing..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="rootCause">Root Cause *</label>
+                    <select id="rootCause" required>
+                        <option value="">Select root cause...</option>
+                        <option value="HO- Address Mismatch">HO- Address Mismatch</option>
+                        <option value="Smart Match Address Rules">Smart Match Address Rules</option>
+                        <option value="Producer/Agency Extraction">Producer/Agency Extraction</option>
+                        <option value="Prior Coverage Lapse Calculation">Prior Coverage Lapse Calculation</option>
+                        <option value="E-Signature Detection">E-Signature Detection</option>
+                        <option value="ID Extraction">ID Extraction</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">Notes (optional)</label>
+                    <textarea id="notes" placeholder="Any additional context..."></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn-primary">Submit Issue</button>
+                    <button type="reset" class="btn-secondary">Clear</button>
+                </div>
+
+                <div class="success-message" id="successMsg">✓ Issue submitted successfully</div>
+            </div>
+        </form>
+
+        <div class="cases-section">
+            <div class="cases-header">
+                <h2>Submitted Cases</h2>
+                <div class="case-count"><span id="caseCount">0</span> total</div>
+            </div>
+
+            <div class="export-section">
+                <button id="exportBtn" class="btn-export">⬇ Export to CSV</button>
+            </div>
+
+            <div id="casesList"></div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('issueForm');
+        const casesList = document.getElementById('casesList');
+        const caseCount = document.getElementById('caseCount');
+        const successMsg = document.getElementById('successMsg');
+        const exportBtn = document.getElementById('exportBtn');
+
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').value = today;
+
+        async function loadCases() {
+            try {
+                const result = await window.localStorage.getItem('inaza_cases_v3');
+                return result ? JSON.parse(result) : [];
+            } catch (err) {
+                return [];
+            }
+        }
+
+        async function saveCases(cases) {
+            try {
+                window.localStorage.setItem('inaza_cases_v3', JSON.stringify(cases));
+            } catch (err) {
+                console.error('Storage error:', err);
+            }
+        }
+
+        async function renderCases() {
+            const cases = await loadCases();
+            caseCount.textContent = cases.length;
+
+            if (cases.length === 0) {
+                casesList.innerHTML = '<div class="empty-state">No cases submitted yet. Fill out the form above to get started.</div>';
+                return;
+            }
+
+            casesList.innerHTML = cases.map((c, idx) => `
+                <div class="case-card">
+                    <div class="case-header">
+                        <div>
+                            <div class="case-policy">${escapeHtml(c.policy)}</div>
+                            <div class="case-date">${c.date}</div>
+                        </div>
+                        <div class="case-tag">${escapeHtml(c.rootCause)}</div>
+                    </div>
+                    <div class="case-finding">
+                        <div class="case-finding-label">INAZA said:</div>
+                        <div class="case-finding-text">${escapeHtml(c.inaza)}</div>
+                    </div>
+                    <div class="case-finding">
+                        <div class="case-finding-label">Actually:</div>
+                        <div class="case-finding-text">${escapeHtml(c.actual)}</div>
+                    </div>
+                    <div class="case-finding">
+                        <div class="case-finding-label">Task:</div>
+                        <div class="case-finding-text">${escapeHtml(c.task)}</div>
+                    </div>
+                    ${c.notes ? `<div class="case-finding"><div class="case-finding-label">Notes:</div><div class="case-finding-text">${escapeHtml(c.notes)}</div></div>` : ''}
+                    <div class="case-actions">
+                        <button type="button" class="btn-delete" onclick="deleteCase(${idx})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        window.deleteCase = async function(idx) {
+            const cases = await loadCases();
+            cases.splice(idx, 1);
+            await saveCases(cases);
+            renderCases();
+        };
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const newCase = {
+                policy: document.getElementById('policyNum').value,
+                date: document.getElementById('date').value,
+                task: document.getElementById('taskInstruction').value,
+                inaza: document.getElementById('inazaFinding').value,
+                actual: document.getElementById('actualIssue').value,
+                rootCause: document.getElementById('rootCause').value,
+                notes: document.getElementById('notes').value
+            };
+
+            const cases = await loadCases();
+            cases.unshift(newCase);
+            await saveCases(cases);
+
+            form.reset();
+            document.getElementById('date').value = today;
+
+            successMsg.classList.add('show');
+            setTimeout(() => successMsg.classList.remove('show'), 3000);
+
+            renderCases();
+        });
+
+        exportBtn.addEventListener('click', async () => {
+            const cases = await loadCases();
+
+            if (cases.length === 0) {
+                alert('No cases to export.');
+                return;
+            }
+
+            let csv = 'Policy Number,Date Flagged,Task Instruction,INAZA Finding,Actual Issue,Root Cause,Notes\n';
+
+            cases.forEach(c => {
+                const quote = (str) => `"${(str || '').replace(/"/g, '""')}"`;
+                csv += [
+                    quote(c.policy),
+                    quote(c.date),
+                    quote(c.task),
+                    quote(c.inaza),
+                    quote(c.actual),
+                    quote(c.rootCause),
+                    quote(c.notes)
+                ].join(',') + '\n';
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `INAZA_Issues_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+
+        renderCases();
+    </script>
+</body>
+</html>
